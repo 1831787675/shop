@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.GoodsTypeMapper">
+  <resultMap id="BaseResultMap" type="com.hxzy.entity.GoodsType">
+    <id column="type_id" jdbcType="INTEGER" property="id" />
+    <result column="type_name" jdbcType="VARCHAR" property="name" />
+    <result column="type_img" jdbcType="VARCHAR" property="img" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="show_nav" jdbcType="BIT" property="showNav" />
+    <result column="show_index" jdbcType="BIT" property="showIndex" />
+    <result column="value_1" jdbcType="VARCHAR" property="value1" />
+    <result column="value_2" jdbcType="VARCHAR" property="value2" />
+    <result column="value_3" jdbcType="VARCHAR" property="value3" />
+    <result column="parentName" jdbcType="VARCHAR" property="parentName" />
+  </resultMap>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     SELECT
+      g.*,
+      t.type_name AS parentName
+      FROM
+      rw_goods_type AS t
+      RIGHT OUTER JOIN rw_goods_type AS g ON t.type_id = g.parent_id
+    where g.type_id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rw_goods_type
+    where type_id = #{type_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hxzy.entity.GoodsType">
+    insert into rw_goods_type (type_id, type_name, type_img, 
+      sort, parent_id, show_nav, 
+      show_index, value_1, value_2, 
+      value_3)
+    values (#{type_id,jdbcType=INTEGER}, #{type_name,jdbcType=VARCHAR}, #{type_img,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{parent_id,jdbcType=INTEGER}, #{show_nav,jdbcType=BIT}, 
+      #{show_index,jdbcType=BIT}, #{value_1,jdbcType=VARCHAR}, #{value_2,jdbcType=VARCHAR}, 
+      #{value_3,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.hxzy.entity.GoodsType">
+    update rw_goods_type
+    <set>
+      <if test="name != null">
+        type_name = #{type_name,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        type_img = #{type_img,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parent_id,jdbcType=INTEGER},
+      </if>
+      <if test="showNav != null">
+        show_nav = #{show_nav,jdbcType=BIT},
+      </if>
+      <if test="showIndex != null">
+        show_index = #{show_index,jdbcType=BIT},
+      </if>
+      <if test="value1 != null">
+        value_1 = #{value_1,jdbcType=VARCHAR},
+      </if>
+      <if test="value2 != null">
+        value_2 = #{value_2,jdbcType=VARCHAR},
+      </if>
+      <if test="value3 != null">
+        value_3 = #{value_3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where type_id = #{type_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hxzy.entity.GoodsType">
+    update rw_goods_type
+    set type_name = #{type_name,jdbcType=VARCHAR},
+      type_img = #{type_img,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      parent_id = #{parent_id,jdbcType=INTEGER},
+      show_nav = #{show_nav,jdbcType=BIT},
+      show_index = #{show_index,jdbcType=BIT},
+      value_1 = #{value_1,jdbcType=VARCHAR},
+      value_2 = #{value_2,jdbcType=VARCHAR},
+      value_3 = #{value_3,jdbcType=VARCHAR}
+    where type_id = #{type_id,jdbcType=INTEGER}
+  </update>
+
+  <select id="searchAll" resultMap="BaseResultMap">
+
+      SELECT
+      g.*,
+      t.type_name AS parentName
+      FROM
+      rw_goods_type AS t
+      RIGHT OUTER JOIN rw_goods_type AS g ON t.type_id = g.parent_id
+
+  </select>
+
+</mapper>
